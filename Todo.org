@@ -1,0 +1,8 @@
+
+* Add items to board
+* Remove items from board
+* Move item to other board (no drag and drop yet!)
+* Order boards
+* Drag and drop
+* Better design
+* Save to cookies
