@@ -4,6 +4,11 @@ import styled from 'styled-components'
 import Input from './Input'
 import Button from './Button'
 
+import { connect } from 'react-redux'
+import {
+  addItem
+} from './actions'
+
 const StyledBoard = styled.div`
   display: flex;
   flex-direction: column;
@@ -42,8 +47,26 @@ const RemoveButton = styled.div`
 `
 
 class Board extends React.Component {
-  handleClick = () => {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      inputValue: ''
+    }
+  }
+
+  remove = () => {
     this.props.removeCallback(this.props.id)
+  }
+
+  handleInputChange = e => {
+    this.setState({
+      inputValue: e.target.value
+    })
+  }
+
+  add = () => {
+    this.props.addItem(this.state.inputValue)
   }
 
   render () {
@@ -51,14 +74,26 @@ class Board extends React.Component {
       <StyledBoard>
         <Title>{this.props.title}</Title>
         <RemoveButton
-          onClick={this.handleClick}
+          onClick={this.remove}
           >
           X
         </RemoveButton>
-        <Item>zzz</Item>
+        {
+          this.props.items.map((item, index) => {
+            return (
+              <Item
+                key={item.id}
+                >
+                {item.title}
+              </Item>
+            )
+          })
+        }
         <FooterContainer>
-          <Input />
-          <Button>
+          <Input onChange={this.handleInputChange} />
+          <Button
+            onClick={this.add}
+            >
             Add item
           </Button>
         </FooterContainer>
@@ -67,4 +102,17 @@ class Board extends React.Component {
   }
 }
 
-export default Board
+const mapStateToProps = (state, ownProps) => {
+  return state.boards.filter(board => board.id === ownProps.id)[0]
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  addItem: title => dispatch(addItem(title, ownProps.id))
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Board)
+
+// export default Board

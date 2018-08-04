@@ -60,7 +60,6 @@ class App extends Component {
               return (
                 <Board
                   key={board.id}
-                  title={board.name}
                   id={board.id}
                   removeCallback={this.removeBoard}
                   />

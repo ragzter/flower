@@ -1,21 +1,21 @@
 
 const initialState = [
   {
-    name: 'Consider',
+    title: 'Consider',
     id: -2,
     items: [
       {
-        name: 'Buy a desk',
+        title: 'Buy a desk',
         id: -1
       }
     ]
   },
   {
-    name: 'Research',
+    title: 'Research',
     id: -1,
     items: [
       {
-        name: 'Buy a new graphics card',
+        title: 'Buy a new graphics card',
         id: -1
       }
     ]
@@ -28,12 +28,39 @@ const boards = (state = initialState, action) => {
     return [
       ...state,
       {
-        name: action.name,
+        title: action.title,
         id: action.id
       }
     ]
   case 'REMOVE_BOARD':
     return state.filter(x => x.id !== action.id)
+  case 'ADD_ITEM':
+    const newState = state.map(board => {
+      if (board.id === action.boardId) {
+        console.log('found board id')
+        const newItems = [
+          ...board.items,
+          {
+            title: action.title,
+            id: action.id
+          }
+        ]
+
+        console.log({
+          ...board,
+          items: newItems
+        })
+
+        return {
+          ...board,
+          items: newItems
+        }
+      } else {
+        return board
+      }
+    })
+
+    return newState
   default:
     return state
   }
