@@ -75,8 +75,18 @@ class Board extends React.Component {
     })
   }
 
+  handleKeyPress = e => {
+    if (e.key === 'Enter') {
+      this.add()
+    }
+  }
+
   add = () => {
     this.props.addItem(this.state.inputValue)
+
+    this.setState({
+      inputValue: ''
+    })
   }
 
   render () {
@@ -109,7 +119,11 @@ class Board extends React.Component {
           }) : <div />
         }
         <FooterContainer>
-          <Input onChange={this.handleInputChange} />
+          <Input
+            value={this.state.inputValue}
+            onChange={this.handleInputChange}
+            onKeyPress={this.handleKeyPress}
+          />
           <Button
             onClick={this.add}
             >
