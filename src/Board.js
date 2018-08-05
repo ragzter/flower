@@ -6,7 +6,8 @@ import Button from './Button'
 
 import { connect } from 'react-redux'
 import {
-  addItem
+  addItem,
+  removeItem
 } from './actions'
 
 const StyledBoard = styled.div`
@@ -83,6 +84,7 @@ class Board extends React.Component {
             return (
               <Item
                 key={item.id}
+                onClick={() => this.props.removeItem(item.id) /* Refactor */}
                 >
                 {item.title}
               </Item>
@@ -107,7 +109,8 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  addItem: title => dispatch(addItem(title, ownProps.id))
+  addItem: title => dispatch(addItem(title, ownProps.id)),
+  removeItem: id => dispatch(removeItem(id))
 })
 
 export default connect(

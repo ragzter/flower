@@ -6,7 +6,7 @@
 //     items: [
 //       {
 //         title: 'Buy a desk',
-//         id: -1
+//         id: -2
 //       }
 //     ]
 //   },
@@ -69,6 +69,16 @@ const boards = (state = initialState, action) => {
         }
       } else {
         return board
+      }
+    })
+
+    localStorage.setItem('state', JSON.stringify(newState))
+    return newState
+  case 'REMOVE_ITEM':
+    newState = state.map(board => {
+      return {
+        ...board,
+        items: board.items.filter(item => item.id !== action.id)
       }
     })
 

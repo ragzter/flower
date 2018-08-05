@@ -20,3 +20,12 @@ export const addItem = (title, id) => ({
   id: nextItemId++,
   title
 })
+
+export const removeItem = id => ({
+  type: 'REMOVE_ITEM',
+  id
+})
+
+export const moveItemToBoard = (itemId, boardId) => ({
+  
+})
