@@ -1,9 +1,9 @@
 
-let nextBoardId = 0
+const generateId = () => Math.round(Math.random()*Number.MAX_SAFE_INTEGER)
 
 export const addBoard = title => ({
   type: 'ADD_BOARD',
-  id: nextBoardId++,
+  id: generateId(),
   title
 })
 
@@ -17,7 +17,7 @@ let nextItemId = 0
 export const addItem = (title, id) => ({
   type: 'ADD_ITEM',
   boardId: id,
-  id: nextItemId++,
+  id: generateId(),
   title
 })
 
