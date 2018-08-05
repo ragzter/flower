@@ -30,8 +30,18 @@ class App extends Component {
     }
   }
 
-  handleClick = () => {
+  addBoard = () => {
     this.props.addBoard(this.state.inputValue)
+
+    this.setState({
+      inputValue: ''
+    })
+  }
+
+  handleKeyPress = e => {
+    if (e.key === 'Enter') {
+      this.addBoard()
+    }
   }
 
   handleInputChange = e => {
@@ -48,9 +58,13 @@ class App extends Component {
     return (
       <AppContainer>
         <HorizontalContainer>
-          <Input onChange={this.handleInputChange} />
+          <Input
+            onChange={this.handleInputChange}
+            onKeyPress={this.handleKeyPress}
+            value={this.state.inputValue}
+            />
           <Button
-            onClick={this.handleClick}
+            onClick={this.addBoard}
             >
             Add board
           </Button>

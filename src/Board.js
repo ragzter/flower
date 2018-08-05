@@ -65,7 +65,7 @@ class Board extends React.Component {
     }
   }
 
-  remove = () => {
+  removeItem = () => {
     this.props.removeCallback(this.props.id)
   }
 
@@ -77,11 +77,11 @@ class Board extends React.Component {
 
   handleKeyPress = e => {
     if (e.key === 'Enter') {
-      this.add()
+      this.addItem()
     }
   }
 
-  add = () => {
+  addItem = () => {
     this.props.addItem(this.state.inputValue)
 
     this.setState({
@@ -94,7 +94,7 @@ class Board extends React.Component {
       <StyledBoard>
         <Title>{this.props.title}</Title>
         <RemoveBoardButton
-          onClick={this.remove}
+          onClick={this.removeItem}
           >
           X
         </RemoveBoardButton>
@@ -125,7 +125,7 @@ class Board extends React.Component {
             onKeyPress={this.handleKeyPress}
           />
           <Button
-            onClick={this.add}
+            onClick={this.addItem}
             >
             Add item
           </Button>
