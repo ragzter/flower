@@ -56,7 +56,7 @@ class App extends Component {
         </HorizontalContainer>
         <HorizontalContainer>
           {
-            this.props.boards.map((board, index) => {
+            this.props.boards ? this.props.boards.map((board, index) => {
               return (
                 <Board
                   key={board.id}
@@ -64,7 +64,7 @@ class App extends Component {
                   removeCallback={this.removeBoard}
                   />
               )
-            })
+            }) : <div />
           }
         </HorizontalContainer>
       </AppContainer>

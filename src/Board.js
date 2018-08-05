@@ -79,7 +79,7 @@ class Board extends React.Component {
           X
         </RemoveButton>
         {
-          this.props.items.map((item, index) => {
+          this.props.items ? this.props.items.map((item, index) => {
             return (
               <Item
                 key={item.id}
@@ -87,7 +87,7 @@ class Board extends React.Component {
                 {item.title}
               </Item>
             )
-          })
+          }) : <div />
         }
         <FooterContainer>
           <Input onChange={this.handleInputChange} />
