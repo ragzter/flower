@@ -7,18 +7,19 @@ import Button from './Button'
 import { connect } from 'react-redux'
 import {
   addItem,
-  removeItem
+  removeItem,
+  moveItemToNextBoard
 } from './actions'
 
 const StyledBoard = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 20pt;
-  margin-right: 20pt;
+  margin-right: 10pt;
   width: 200pt;
   height: 400pt;
-  border: 1pt solid gray;
-  border-radius: 10pt;
+  border: 1pt solid lightgray;
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.2);
   padding: 10pt;
   background-color: white;
 `
@@ -41,9 +42,17 @@ const FooterContainer = styled.div`
   margin-top: auto;
 `
 
-const RemoveButton = styled.div`
+const RemoveBoardButton = styled.div`
   position: absolute;
   margin-left: 191pt;
+  cursor: pointer;
+`
+
+const MoveItemButton = styled.div`
+  position: absolute;
+  margin-top: -18pt;
+  font-size: 20pt;
+  margin-left: 175pt;
   cursor: pointer;
 `
 
@@ -74,19 +83,27 @@ class Board extends React.Component {
     return (
       <StyledBoard>
         <Title>{this.props.title}</Title>
-        <RemoveButton
+        <RemoveBoardButton
           onClick={this.remove}
           >
           X
-        </RemoveButton>
+        </RemoveBoardButton>
         {
           this.props.items ? this.props.items.map((item, index) => {
             return (
               <Item
                 key={item.id}
-                onClick={() => this.props.removeItem(item.id) /* Refactor */}
                 >
-                {item.title}
+                <span
+                  onClick={() => this.props.removeItem(item.id) /* Refactor */}
+                  >
+                  {item.title}
+                </span>
+                <MoveItemButton
+                  onClick={() => this.props.moveItemToNextBoard(item.id)}
+                  >
+                  →
+                </MoveItemButton>
               </Item>
             )
           }) : <div />
@@ -110,7 +127,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   addItem: title => dispatch(addItem(title, ownProps.id)),
-  removeItem: id => dispatch(removeItem(id))
+  removeItem: id => dispatch(removeItem(id)),
+  moveItemToNextBoard: id => dispatch(moveItemToNextBoard(id))
 })
 
 export default connect(

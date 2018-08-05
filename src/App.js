@@ -18,6 +18,7 @@ const AppContainer = styled.div`
   flex-direction: column;
   margin: 20pt;
   background-color: #f9e9da;
+  border: 1px solid lightgray;
 `
 
 class App extends Component {

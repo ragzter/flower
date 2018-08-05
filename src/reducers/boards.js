@@ -49,7 +49,6 @@ const boards = (state = initialState, action) => {
   case 'ADD_ITEM':
     newState = state.map(board => {
       if (board.id === action.boardId) {
-        console.log('found board id')
         const newItems = [
           ...board.items,
           {
@@ -57,11 +56,6 @@ const boards = (state = initialState, action) => {
             id: action.id
           }
         ]
-
-        console.log({
-          ...board,
-          items: newItems
-        })
 
         return {
           ...board,
@@ -83,6 +77,48 @@ const boards = (state = initialState, action) => {
     })
 
     localStorage.setItem('state', JSON.stringify(newState))
+    return newState
+  case 'MOVE_ITEM_TO_NEXT_BOARD':
+    let storedItem
+
+    newState = state.map(board => {
+      if (board.items) {
+        board.items.map(item => {
+          if (item.id === action.id) {
+            console.log('storing item:')
+            storedItem = item
+            console.log(storedItem)
+          }
+        })
+      }
+
+      let newItems = board.items ? board.items.filter(item => item.id !== action.id) : []
+
+      if (storedItem && newItems.length === board.items.length) {
+
+        console.log('stored item found')
+        console.log('newItems:')
+
+        console.log(newItems)
+        newItems = [
+          ...newItems,
+          storedItem
+        ]
+
+        console.log('newItems (after interpolation):')
+        console.log(newItems)
+
+        storedItem = null
+      }
+
+      return {
+        ...board,
+        items: newItems
+      }
+    })
+
+    localStorage.setItem('state', JSON.stringify(newState))
+
     return newState
   default:
     return state

@@ -26,6 +26,7 @@ export const removeItem = id => ({
   id
 })
 
-export const moveItemToBoard = (itemId, boardId) => ({
-  
+export const moveItemToNextBoard = id => ({
+  type: 'MOVE_ITEM_TO_NEXT_BOARD',
+  id
 })
