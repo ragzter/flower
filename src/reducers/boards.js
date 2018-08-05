@@ -1,28 +1,7 @@
 
-// const initialState = [
-//   {
-//     title: 'Consider',
-//     id: -2,
-//     items: [
-//       {
-//         title: 'Buy a desk',
-//         id: -2
-//       }
-//     ]
-//   },
-//   {
-//     title: 'Research',
-//     id: -1,
-//     items: [
-//       {
-//         title: 'Buy a new graphics card',
-//         id: -1
-//       }
-//     ]
-//   }
-// ]
+const storedState = JSON.parse(localStorage.getItem('state'))
 
-const initialState = JSON.parse(localStorage.getItem('state'))
+const initialState = storedState ? storedState : []
 
 const boards = (state = initialState, action) => {
   let newState
@@ -49,8 +28,9 @@ const boards = (state = initialState, action) => {
   case 'ADD_ITEM':
     newState = state.map(board => {
       if (board.id === action.boardId) {
+        const items = board.items ? board.items : []
         const newItems = [
-          ...board.items,
+          ...items,
           {
             title: action.title,
             id: action.id
@@ -92,7 +72,7 @@ const boards = (state = initialState, action) => {
 
       let newItems = board.items ? board.items.filter(item => item.id !== action.id) : []
 
-      if (storedItem && newItems.length === board.items.length) {
+      if (storedItem && newItems.length === (board.items ? board.items.length : 0)) {
 
         newItems = [
           ...newItems,
