@@ -1,8 +1,8 @@
 
-* Remove items from board
-* Move item to other board (no drag and drop yet!)
-* Rename board
-* Rename item
-* Order boards
-* Drag and drop
-* Better design
+ - Refactor the state storage functions
+ - Rename board
+ - Rename item
+ - Order boards
+ - Drag and drop
+ - Better design
+ - Refactor inline function ~removeItem~
