@@ -85,9 +85,7 @@ const boards = (state = initialState, action) => {
       if (board.items) {
         board.items.map(item => {
           if (item.id === action.id) {
-            console.log('storing item:')
             storedItem = item
-            console.log(storedItem)
           }
         })
       }
@@ -96,17 +94,10 @@ const boards = (state = initialState, action) => {
 
       if (storedItem && newItems.length === board.items.length) {
 
-        console.log('stored item found')
-        console.log('newItems:')
-
-        console.log(newItems)
         newItems = [
           ...newItems,
           storedItem
         ]
-
-        console.log('newItems (after interpolation):')
-        console.log(newItems)
 
         storedItem = null
       }
