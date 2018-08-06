@@ -13,6 +13,7 @@ import {
 } from './actions'
 
 const AppContainer = styled.div`
+  display: inline-block;
   padding: 20pt;
   display: flex;
   flex-direction: column;

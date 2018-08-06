@@ -21,19 +21,22 @@ const StyledBoard = styled.div`
   border: 1pt solid lightgray;
   box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.2);
   padding: 10pt;
-  background-color: white;
+  background: linear-gradient(white, #f8fff8);
 `
 
 const Title = styled.div`
   align-self: flex-start;
+  font-size: 16pt;
   text-align: center;
   border-bottom: 1pt solid gray;
-  padding-bottom: 10pt;
+  padding-bottom: 16pt;
   height: 10pt;
   width: 200pt;
+  color: #404040;
 `
 
 const Item = styled.div`
+  color: #404040;
   padding: 5pt;
   border-bottom: 1pt solid lightgray;
 `
@@ -46,6 +49,10 @@ const RemoveBoardButton = styled.div`
   position: absolute;
   margin-left: 191pt;
   cursor: pointer;
+  color: gray;
+  &:hover {
+    color: red;
+  }
 `
 
 const MoveItemButton = styled.div`
@@ -54,6 +61,10 @@ const MoveItemButton = styled.div`
   font-size: 20pt;
   margin-left: 175pt;
   cursor: pointer;
+  color: gray;
+  &:hover {
+    color: black;
+  }
 `
 
 class Board extends React.Component {

@@ -12,8 +12,6 @@ export const removeBoard = id => ({
   id
 })
 
-let nextItemId = 0
-
 export const addItem = (title, id) => ({
   type: 'ADD_ITEM',
   boardId: id,
