@@ -21,10 +21,21 @@ const StyledBoard = styled.div`
   border: 1pt solid lightgray;
   box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.2);
   padding: 10pt;
-  background: linear-gradient(white, #f8fff8);
+  background: linear-gradient(to bottom right, white, #f0f0f0);
 `
 
 const Title = styled.div`
+  align-self: flex-start;
+  font-size: 16pt;
+  text-align: center;
+  border-bottom: 1pt solid gray;
+  padding-bottom: 16pt;
+  height: 10pt;
+  width: 200pt;
+  color: #404040;
+`
+
+const TitleEdit = styled.input`
   align-self: flex-start;
   font-size: 16pt;
   text-align: center;
@@ -72,7 +83,9 @@ class Board extends React.Component {
     super(props)
 
     this.state = {
-      inputValue: ''
+      newItemInputValue: '',
+      editTitleInputValue: props.title,
+      editingTitle: false
     }
   }
 
@@ -80,30 +93,71 @@ class Board extends React.Component {
     this.props.removeCallback(this.props.id)
   }
 
-  handleInputChange = e => {
+  handleNewItemInputChange = e => {
     this.setState({
-      inputValue: e.target.value
+      newItemInputValue: e.target.value
     })
   }
 
-  handleKeyPress = e => {
+  handleNewItemInputKeyPress = e => {
     if (e.key === 'Enter') {
       this.addItem()
     }
   }
 
+  handleEditTitleInputChange = e => {
+    this.setState({
+      editTitleInputValue: e.target.value
+    })
+  }
+
+  handleEditTitleInputKeyPress = e => {
+    if (e.key === 'Enter') {
+      console.log('change board name')
+      this.setState({
+        editingTitle: false
+      })
+    }
+  }
+
   addItem = () => {
-    this.props.addItem(this.state.inputValue)
+    this.props.addItem(this.state.newItemInputValue)
 
     this.setState({
-      inputValue: ''
+      newItemInputValue: ''
+    })
+  }
+
+  editTitle = () => {
+    this.setState({
+      editingTitle: true
     })
   }
 
   render () {
+    let TitleComponent
+
+    if (this.state.editingTitle) {
+      TitleComponent = props => (
+        <Input
+          value={this.state.editTitleInputValue}
+          onChange={this.handleEditTitleInputChange}
+          onKeyPress={this.handleEditTitleInputKeyPress}
+          />
+      )
+    } else {
+      TitleComponent = props => (
+        <Title
+          onClick={this.editTitle}
+          >
+          {this.props.title}
+        </Title>
+      )
+    }
+
     return (
       <StyledBoard>
-        <Title>{this.props.title}</Title>
+        <TitleComponent />
         <RemoveBoardButton
           onClick={this.removeItem}
           >
@@ -131,9 +185,9 @@ class Board extends React.Component {
         }
         <FooterContainer>
           <Input
-            value={this.state.inputValue}
-            onChange={this.handleInputChange}
-            onKeyPress={this.handleKeyPress}
+            value={this.state.newItemInputValue}
+            onChange={this.handleNewItemInputChange}
+            onKeyPress={this.handleNewItemInputKeyPress}
           />
           <Button
             onClick={this.addItem}

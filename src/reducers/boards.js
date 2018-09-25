@@ -91,6 +91,21 @@ const boards = (state = initialState, action) => {
     localStorage.setItem('state', JSON.stringify(newState))
 
     return newState
+  case 'RENAME_BOARD':
+    let newState = state.map(board => {
+      if (board.id === action.id) {
+        return {
+          ...board.id,
+          title: action.title
+        }
+      } else {
+        return board
+      }
+    })
+
+    localStorage.setItem('state', JSON.stringify(newState))
+
+    return newState
   default:
     return state
   }

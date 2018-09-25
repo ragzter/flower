@@ -14,12 +14,10 @@ import {
 
 const AppContainer = styled.div`
   display: inline-block;
-  padding: 20pt;
+  padding: 40pt;
   display: flex;
   flex-direction: column;
   margin: 20pt;
-  background-color: #f9e9da;
-  border: 1px solid lightgray;
 `
 
 class App extends Component {
@@ -64,6 +62,7 @@ class App extends Component {
             onKeyPress={this.handleKeyPress}
             value={this.state.inputValue}
             />
+          <div style={{marginTop: '50pt'}} />
           <Button
             onClick={this.addBoard}
             >
