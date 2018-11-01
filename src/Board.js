@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components'
 import Input from './Input'
 import Button from './Button'
@@ -7,6 +7,7 @@ import Item from './Item'
 
 import { connect } from 'react-redux'
 import {
+  renameBoard,
   addItem,
   removeBoard
 } from './actions'
@@ -24,28 +25,20 @@ const StyledBoard = styled.div`
   background: linear-gradient(to bottom right, white, #f0f0f0);
 `
 
-const Title = styled.div`
+const Title = styled.input`
   align-self: flex-start;
   font-size: 16pt;
   text-align: center;
+  border: none;
   border-bottom: 1pt solid gray;
-  padding-bottom: 16pt;
+  padding-top: 4pt;
+  padding-bottom: 12pt;
   height: 10pt;
   width: 200pt;
   color: #404040;
+  background-color: inherit;
+  outline: none;
 `
-
-// Will be implemented later
-// const TitleEdit = styled.input`
-//   align-self: flex-start;
-//   font-size: 16pt;
-//   text-align: center;
-//   border-bottom: 1pt solid gray;
-//   padding-bottom: 16pt;
-//   height: 10pt;
-//   width: 200pt;
-//   color: #404040;
-// `
 
 const FooterContainer = styled.div`
   margin-top: auto;
@@ -63,11 +56,22 @@ const RemoveBoardButton = styled.div`
 
 const Board = props => {
   const [newItemName, setNewItemName] = useState('')
+  const [editBoardNameMode, setEditBoardNameMode] = useState(false)
+  const [newBoardName, setNewBoardName] = useState(props.title)
+
+  const inputRef = React.createRef()
 
   const addItem = () => {
     props.addItem(newItemName)
     setNewItemName('')
   }
+
+  const renameBoard = () => {
+    props.renameBoard(newBoardName)
+    setEditBoardNameMode(false)
+  }
+
+  useEffect(() => inputRef.current.focus(), [editBoardNameMode])
 
   const items = props.items && props.items.map(item => (
     <Item key={item.id} id={item.id}>{item.title}</Item>
@@ -75,9 +79,17 @@ const Board = props => {
 
   return (
     <StyledBoard>
-      <Title>
-        {props.children}
-      </Title>
+      <div
+        onClick={() => !editBoardNameMode ? setEditBoardNameMode(true) : null}
+      >
+        <Title
+          value={newBoardName}
+          onChange={e => setNewBoardName(e.target.value)}
+          onKeyPress={e => e.key === 'Enter' && renameBoard()}
+          disabled={!editBoardNameMode}
+          innerRef={inputRef}
+        />
+      </div>
       <RemoveBoardButton
         onClick={props.removeBoard}
       >
@@ -103,6 +115,7 @@ const Board = props => {
 export default connect(
   null,
   (dispatch, ownProps) => ({
+    renameBoard: title => dispatch(renameBoard(ownProps.id, title)),
     addItem: title => dispatch(addItem(title, ownProps.id)),
     removeBoard: () => dispatch(removeBoard(ownProps.id))
   })

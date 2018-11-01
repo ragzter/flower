@@ -23,9 +23,7 @@ const App = props => {
   const [newBoardName, setNewBoardName] = useState('')
 
   const boards = props.boards && props.boards.map(b => (
-    <Board key={b.id} id={b.id} items={b.items}>
-      {b.title}
-    </Board>
+    <Board key={b.id} id={b.id} items={b.items} title={b.title} />
   ))
 
   const addBoard = () => {

@@ -95,7 +95,7 @@ const boards = (state = initialState, action) => {
     newState = state.map(board => {
       if (board.id === action.id) {
         return {
-          ...board.id,
+          ...board,
           title: action.title
         }
       } else {
