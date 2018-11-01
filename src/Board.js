@@ -1,14 +1,14 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components'
 import Input from './Input'
 import Button from './Button'
+import Item from './Item'
 
 import { connect } from 'react-redux'
 import {
   addItem,
-  removeItem,
-  moveItemToNextBoard
+  removeBoard
 } from './actions'
 
 const StyledBoard = styled.div`
@@ -46,12 +46,6 @@ const TitleEdit = styled.input`
   color: #404040;
 `
 
-const Item = styled.div`
-  color: #404040;
-  padding: 5pt;
-  border-bottom: 1pt solid lightgray;
-`
-
 const FooterContainer = styled.div`
   margin-top: auto;
 `
@@ -66,153 +60,49 @@ const RemoveBoardButton = styled.div`
   }
 `
 
-const MoveItemButton = styled.div`
-  position: absolute;
-  margin-top: -18pt;
-  font-size: 20pt;
-  margin-left: 175pt;
-  cursor: pointer;
-  color: gray;
-  &:hover {
-    color: black;
-  }
-`
+const Board = props => {
+  const [newItemName, setNewItemName] = useState('')
 
-class Board extends React.Component {
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      newItemInputValue: '',
-      editTitleInputValue: props.title,
-      editingTitle: false
-    }
+  const addItem = () => {
+    props.addItem(newItemName)
+    setNewItemName('')
   }
 
-  removeItem = () => {
-    this.props.removeCallback(this.props.id)
-  }
+  const items = props.items && props.items.map(item => (
+    <Item key={item.id} id={item.id}>{item.title}</Item>
+  ))
 
-  handleNewItemInputChange = e => {
-    this.setState({
-      newItemInputValue: e.target.value
-    })
-  }
-
-  handleNewItemInputKeyPress = e => {
-    if (e.key === 'Enter') {
-      this.addItem()
-    }
-  }
-
-  handleEditTitleInputChange = e => {
-    this.setState({
-      editTitleInputValue: e.target.value
-    })
-  }
-
-  handleEditTitleInputKeyPress = e => {
-    if (e.key === 'Enter') {
-      console.log('change board name')
-      this.setState({
-        editingTitle: false
-      })
-    }
-  }
-
-  addItem = () => {
-    this.props.addItem(this.state.newItemInputValue)
-
-    this.setState({
-      newItemInputValue: ''
-    })
-  }
-
-  editTitle = () => {
-    this.setState({
-      editingTitle: true
-    })
-  }
-
-  render () {
-    let TitleComponent
-
-    if (this.state.editingTitle) {
-      TitleComponent = props => (
+  return (
+    <StyledBoard>
+      <Title>
+        {props.children}
+      </Title>
+      <RemoveBoardButton
+        onClick={props.removeBoard}
+      >
+        X
+      </RemoveBoardButton>
+      { items }
+      <FooterContainer>
         <Input
-          value={this.state.editTitleInputValue}
-          onChange={this.handleEditTitleInputChange}
-          onKeyPress={this.handleEditTitleInputKeyPress}
-          />
-      )
-    } else {
-      TitleComponent = props => (
-        <Title
-          onClick={this.editTitle}
-          >
-          {this.props.title}
-        </Title>
-      )
-    }
-
-    return (
-      <StyledBoard>
-        <TitleComponent />
-        <RemoveBoardButton
-          onClick={this.removeItem}
-          >
-          X
-        </RemoveBoardButton>
-        {
-          this.props.items ? this.props.items.map((item, index) => {
-            return (
-              <Item
-                key={item.id}
-                >
-                <span
-                  onClick={() => this.props.removeItem(item.id) /* Refactor */}
-                  >
-                  {item.title}
-                </span>
-                <MoveItemButton
-                  onClick={() => this.props.moveItemToNextBoard(item.id)}
-                  >
-                  →
-                </MoveItemButton>
-              </Item>
-            )
-          }) : <div />
-        }
-        <FooterContainer>
-          <Input
-            value={this.state.newItemInputValue}
-            onChange={this.handleNewItemInputChange}
-            onKeyPress={this.handleNewItemInputKeyPress}
-          />
-          <Button
-            onClick={this.addItem}
-            >
-            Add item
-          </Button>
-        </FooterContainer>
-      </StyledBoard>
-    )
-  }
+          value={newItemName}    
+          onChange={e => setNewItemName(e.target.value)}
+          onKeyPress={e => e.key === 'Enter' && addItem()}
+        />
+        <Button
+          onClick={addItem}
+        >
+          Add item
+        </Button>
+      </FooterContainer>
+    </StyledBoard>
+  )
 }
-
-const mapStateToProps = (state, ownProps) => {
-  return state.boards.filter(board => board.id === ownProps.id)[0]
-}
-
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  addItem: title => dispatch(addItem(title, ownProps.id)),
-  removeItem: id => dispatch(removeItem(id)),
-  moveItemToNextBoard: id => dispatch(moveItemToNextBoard(id))
-})
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  null,
+  (dispatch, ownProps) => ({
+    addItem: title => dispatch(addItem(title, ownProps.id)),
+    removeBoard: () => dispatch(removeBoard(ownProps.id))
+  })
 )(Board)
-
-// export default Board

@@ -4,11 +4,9 @@ const storedState = JSON.parse(localStorage.getItem('state'))
 const initialState = storedState ? storedState : []
 
 const boards = (state = initialState, action) => {
-  let newState
-
   switch (action.type) {
   case 'ADD_BOARD':
-    newState = [
+    let newState = [
       ...state,
       {
         title: action.title,
@@ -52,7 +50,7 @@ const boards = (state = initialState, action) => {
     newState = state.map(board => {
       return {
         ...board,
-        items: board.items.filter(item => item.id !== action.id)
+        items: board.items ? board.items.filter(item => item.id !== action.id) : []
       }
     })
 
@@ -92,7 +90,7 @@ const boards = (state = initialState, action) => {
 
     return newState
   case 'RENAME_BOARD':
-    let newState = state.map(board => {
+    newState = state.map(board => {
       if (board.id === action.id) {
         return {
           ...board.id,

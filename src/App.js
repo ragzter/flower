@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react';
+import React, { useState, Component } from 'react';
 import Board from './Board'
 import Input from './Input'
 import styled from 'styled-components'
@@ -8,8 +8,7 @@ import Button from './Button'
 
 import { connect } from 'react-redux'
 import {
-  addBoard,
-  removeBoard
+  addBoard
 } from './actions'
 
 const AppContainer = styled.div`
@@ -20,83 +19,43 @@ const AppContainer = styled.div`
   margin: 20pt;
 `
 
-class App extends Component {
-  constructor (props) {
-    super(props)
+const App = props => {
+  const [newBoardName, setNewBoardName] = useState('')
 
-    this.state = {
-      inputValue: ''
-    }
+  const boards = props.boards && props.boards.map(b => (
+    <Board key={b.id} id={b.id} items={b.items}>
+      {b.title}
+    </Board>
+  ))
+
+  const addBoard = () => {
+    props.addBoard(newBoardName)
+    setNewBoardName('')
   }
 
-  addBoard = () => {
-    this.props.addBoard(this.state.inputValue)
-
-    this.setState({
-      inputValue: ''
-    })
-  }
-
-  handleKeyPress = e => {
-    if (e.key === 'Enter') {
-      this.addBoard()
-    }
-  }
-
-  handleInputChange = e => {
-    this.setState({
-      inputValue: e.target.value
-    })
-  }
-
-  removeBoard = id => {
-    this.props.removeBoard(id)
-  }
-
-  render() {
-    return (
-      <AppContainer>
-        <HorizontalContainer>
-          <Input
-            onChange={this.handleInputChange}
-            onKeyPress={this.handleKeyPress}
-            value={this.state.inputValue}
-            />
-          <div style={{marginTop: '50pt'}} />
-          <Button
-            onClick={this.addBoard}
-            >
-            Add board
-          </Button>
-        </HorizontalContainer>
-        <HorizontalContainer>
-          {
-            this.props.boards ? this.props.boards.map((board, index) => {
-              return (
-                <Board
-                  key={board.id}
-                  id={board.id}
-                  removeCallback={this.removeBoard}
-                  />
-              )
-            }) : <div />
-          }
-        </HorizontalContainer>
-      </AppContainer>
-    );
-  }
+  return (
+    <AppContainer>
+      <HorizontalContainer>
+        <Input
+          value={newBoardName}
+          onChange={e => setNewBoardName(e.target.value)}
+          onKeyPress={e => e.key === 'Enter' && addBoard()}
+        />
+        <div style={{marginTop: '50pt'}} />
+        <Button
+          onClick={addBoard}
+        >
+          Add board
+        </Button>
+      </HorizontalContainer>
+      <HorizontalContainer>
+        { boards }
+      </HorizontalContainer>
+    </AppContainer>
+  )
 }
 
-const mapStateToProps = state => ({
-  boards: state.boards
-})
-
-const mapDispatchToProps = dispatch => ({
-  addBoard: name => dispatch(addBoard(name)),
-  removeBoard: id => dispatch(removeBoard(id))
-})
-
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  state => ({ boards: state.boards }),
+  dispatch => ({ addBoard: name => dispatch(addBoard(name)) })
 )(App);
