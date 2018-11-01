@@ -35,16 +35,17 @@ const Title = styled.div`
   color: #404040;
 `
 
-const TitleEdit = styled.input`
-  align-self: flex-start;
-  font-size: 16pt;
-  text-align: center;
-  border-bottom: 1pt solid gray;
-  padding-bottom: 16pt;
-  height: 10pt;
-  width: 200pt;
-  color: #404040;
-`
+// Will be implemented later
+// const TitleEdit = styled.input`
+//   align-self: flex-start;
+//   font-size: 16pt;
+//   text-align: center;
+//   border-bottom: 1pt solid gray;
+//   padding-bottom: 16pt;
+//   height: 10pt;
+//   width: 200pt;
+//   color: #404040;
+// `
 
 const FooterContainer = styled.div`
   margin-top: auto;

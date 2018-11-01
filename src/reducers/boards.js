@@ -65,6 +65,8 @@ const boards = (state = initialState, action) => {
           if (item.id === action.id) {
             storedItem = item
           }
+
+          return null
         })
       }
 

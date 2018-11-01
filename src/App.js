@@ -1,5 +1,5 @@
 
-import React, { useState, Component } from 'react';
+import React, { useState } from 'react';
 import Board from './Board'
 import Input from './Input'
 import styled from 'styled-components'
