@@ -5,10 +5,12 @@ import Input from './Input'
 import styled from 'styled-components'
 import HorizontalContainer from './HorizontalContainer'
 import Button from './Button'
+import { DragDropContext } from 'react-beautiful-dnd'
 
 import { connect } from 'react-redux'
 import {
-  addBoard
+  addBoard,
+  moveItem
 } from './actions'
 
 const AppContainer = styled.div`
@@ -18,6 +20,10 @@ const AppContainer = styled.div`
   flex-direction: column;
   margin: 20pt;
 `
+
+const onBeforeDragStart = () => {}
+const onDragStart = () => {}
+const onDragUpdate = () => {}
 
 const App = props => {
   const [newBoardName, setNewBoardName] = useState('')
@@ -31,29 +37,45 @@ const App = props => {
     setNewBoardName('')
   }
 
+  const onDragEnd = result => {
+    if (!result.destination) { return }
+
+    props.moveItem(result.source, result.destination)
+  }
+
   return (
-    <AppContainer>
-      <HorizontalContainer>
-        <Input
-          value={newBoardName}
-          onChange={e => setNewBoardName(e.target.value)}
-          onKeyPress={e => e.key === 'Enter' && addBoard()}
-        />
-        <div style={{marginTop: '50pt'}} />
-        <Button
-          onClick={addBoard}
-        >
-          Add board
-        </Button>
-      </HorizontalContainer>
-      <HorizontalContainer>
-        { boards }
-      </HorizontalContainer>
-    </AppContainer>
+    <DragDropContext
+      onBeforeDragStart={onBeforeDragStart}
+      onDragStart={onDragStart}
+      onDragUpdate={onDragUpdate}
+      onDragEnd={onDragEnd}
+    >
+      <AppContainer>
+        <HorizontalContainer>
+          <Input
+            value={newBoardName}
+            onChange={e => setNewBoardName(e.target.value)}
+            onKeyPress={e => e.key === 'Enter' && addBoard()}
+          />
+            <div style={{marginTop: '50pt'}} />
+            <Button
+              onClick={addBoard}
+            >
+              Add board
+            </Button>
+        </HorizontalContainer>
+        <HorizontalContainer>
+          { boards }
+        </HorizontalContainer>
+      </AppContainer>
+    </DragDropContext>
   )
 }
 
 export default connect(
   state => ({ boards: state.boards }),
-  dispatch => ({ addBoard: name => dispatch(addBoard(name)) })
+  dispatch => ({
+    addBoard: name => dispatch(addBoard(name)),
+    moveItem: (from, to) => dispatch(moveItem(from, to))
+  })
 )(App);

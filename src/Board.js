@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import Input from './Input'
 import Button from './Button'
 import Item from './Item'
+import { Droppable } from 'react-beautiful-dnd'
 
 import { connect } from 'react-redux'
 import {
@@ -46,11 +47,13 @@ const FooterContainer = styled.div`
 
 const RemoveBoardButton = styled.div`
   position: absolute;
-  margin-left: 191pt;
+  margin-left: 185pt;
+  margin-top: -5pt;
+  font-size: 20pt;
   cursor: pointer;
-  color: gray;
+  color: #888;
   &:hover {
-    color: red;
+    color: #f88;
   }
 `
 
@@ -73,8 +76,14 @@ const Board = props => {
 
   useEffect(() => inputRef.current.focus(), [editBoardNameMode])
 
-  const items = props.items && props.items.map(item => (
-    <Item key={item.id} id={item.id}>{item.title}</Item>
+  const items = props.items && props.items.map((item, index) => (
+    <Item
+      key={item.id}
+      id={item.id}
+      index={index}
+    >
+      {item.title}
+    </Item>
   ))
 
   return (
@@ -93,9 +102,24 @@ const Board = props => {
       <RemoveBoardButton
         onClick={props.removeBoard}
       >
-        X
+        ⨯
       </RemoveBoardButton>
-      { items }
+      <Droppable
+        droppableId={props.id + ''}
+        type="BOARD"
+      >
+        {(provided, snapshot) => (
+          <div
+            ref={provided.innerRef}
+            style={{
+            }}
+            {...provided.droppableProps}
+          >
+            { items }
+            { provided.placeholder }
+          </div>
+        )}
+      </Droppable>
       <FooterContainer>
         <Input
           value={newItemName}    

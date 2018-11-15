@@ -56,41 +56,6 @@ const boards = (state = initialState, action) => {
 
     localStorage.setItem('state', JSON.stringify(newState))
     return newState
-  case 'MOVE_ITEM_TO_NEXT_BOARD':
-    let storedItem
-
-    newState = state.map(board => {
-      if (board.items) {
-        board.items.map(item => {
-          if (item.id === action.id) {
-            storedItem = item
-          }
-
-          return null
-        })
-      }
-
-      let newItems = board.items ? board.items.filter(item => item.id !== action.id) : []
-
-      if (storedItem && newItems.length === (board.items ? board.items.length : 0)) {
-
-        newItems = [
-          ...newItems,
-          storedItem
-        ]
-
-        storedItem = null
-      }
-
-      return {
-        ...board,
-        items: newItems
-      }
-    })
-
-    localStorage.setItem('state', JSON.stringify(newState))
-
-    return newState
   case 'RENAME_BOARD':
     newState = state.map(board => {
       if (board.id === action.id) {
@@ -106,9 +71,40 @@ const boards = (state = initialState, action) => {
     localStorage.setItem('state', JSON.stringify(newState))
 
     return newState
+  case 'MOVE_ITEM':
+    let item
+
+    newState = state.map(board => {
+      if (action.source.droppableId === board.id + '') {
+        item = board.items[action.source.index]
+        return {
+          ...board,
+          items: board.items.filter((_, i) => i !== action.source.index)
+        }
+      } else {
+        return board
+      }
+    })
+
+    newState = newState.map(board => {
+      if (action.destination.droppableId === board.id + ''){
+        return {
+          ...board,
+          items: insertAtIndex(item, action.destination.index, board.items)
+        }
+      } else {
+        return board
+      }
+    })
+
+    localStorage.setItem('state', JSON.stringify(newState))
+
+    return newState
   default:
     return state
   }
 }
+
+const insertAtIndex = (x, i, arr) => [].concat(arr.slice(0, i), x, arr.slice(i, arr.length))
 
 export default boards

@@ -24,13 +24,14 @@ export const removeItem = id => ({
   id
 })
 
-export const moveItemToNextBoard = id => ({
-  type: 'MOVE_ITEM_TO_NEXT_BOARD',
-  id
-})
-
 export const renameBoard = (id, title) => ({
   type: 'RENAME_BOARD',
   id,
   title
+})
+
+export const moveItem = (source, destination) => ({
+  type: 'MOVE_ITEM',
+  source,
+  destination
 })
