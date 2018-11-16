@@ -14,9 +14,6 @@ const DraggableBoard = props => {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          style={{
-            outline: 'none'
-          }}
         >
           <Board {...props} />
         </div>
