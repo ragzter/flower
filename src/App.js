@@ -89,7 +89,7 @@ const App = props => {
               style={{
                 display: 'flex',
                 flexDirection: 'row',
-                margin: 'auto',
+                margin: 'auto'
               }}
               {...provided.droppableProps}
             >
