@@ -30,6 +30,12 @@ export const renameBoard = (id, title) => ({
   title
 })
 
+export const renameItem = (id, title) => ({
+  type: 'RENAME_ITEM',
+  id,
+  title
+})
+
 export const moveItem = (source, destination) => ({
   type: 'MOVE_ITEM',
   source,
