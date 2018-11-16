@@ -33,7 +33,7 @@ const Title = styled.input`
   text-align: center;
   border: none;
   border: ${p => p.disabled ? '1px solid transparent' : '1px dashed lightgray'};
-  border-bottom: 1pt solid gray;
+  border-bottom: 1pt solid #aaa;
   box-sizing: border-box;
   padding-top: 10pt;
   padding-bottom: 18pt;
@@ -117,7 +117,11 @@ const Board = props => {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              height: '340pt'
+              height: '340pt',
+              borderLeft: snapshot.isDraggingOver ? '1px dashed lightgray' : '1px dashed transparent',
+              borderRight: snapshot.isDraggingOver ? '1px dashed lightgray' : '1px dashed transparent',
+              borderBottom: snapshot.isDraggingOver ? '1px dashed lightgray' : '1px dashed transparent',
+              backgroundColor: snapshot.isDraggingOver ? 'white' : 'inherit'
             }}
             {...provided.droppableProps}
           >

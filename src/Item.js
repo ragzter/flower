@@ -20,10 +20,10 @@ const ItemContainer = styled.div`
 const Icon = styled.div`
   margin: 0px 5px;
   font-size: 15pt;
-  cursor: ${p => p.pointer ? 'pointer' : 'inherit'};
-  color: lightgray;
+  cursor: ${p => p.cursor || 'inherit'};
+  color: ${p => p.color || 'lightgray'};
   &:hover {
-    color: ${p => p.color};
+    color: ${p => p.hoverColor};
   };
 `
 
@@ -57,9 +57,15 @@ const Item = props => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <ItemContainer>
+          <ItemContainer
+            style={{cursor: 'default'}}
+          >
             <HorizontalContainer>
-              <Icon>
+              <Icon
+                cursor={snapshot.isDragging ? 'grabbing' : 'grab'}
+                hoverColor='gray'
+                color={snapshot.isDragging ? 'gray' : 'lightgray'}
+              >
                 ☰
               </Icon> 
               <Text
@@ -70,14 +76,16 @@ const Item = props => {
                 disabled={!editItemNameMode}
               />
               <Icon
-                color='#ada'
+                hoverColor='#ada'
+                cursor='pointer'
                 onClick={() => !editItemNameMode ? setEditItemNameMode(true) : null}
               >
               ✎  
               </Icon>
               <Icon
                 onClick={() => props.removeItem(props.id)}
-                color='#f88'
+                cursor='pointer'
+                hoverColor='#f88'
               >
                 🞩
               </Icon>
