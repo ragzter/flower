@@ -10,6 +10,10 @@ const StyledInput = styled.input`
   font-size: 13t;
   height: 17pt;
   border: 1px solid lightgray;
+  border-radius: 2pt;
+  ::placeholder {
+    color: #888;
+  }
 `
 
 class Input extends React.Component {

@@ -1,16 +1,17 @@
 
 import React, { useState } from 'react';
-import Board from './Board'
+import DraggableBoard from './DraggableBoard'
 import Input from './Input'
 import styled from 'styled-components'
 import HorizontalContainer from './HorizontalContainer'
 import Button from './Button'
-import { DragDropContext } from 'react-beautiful-dnd'
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
 import { connect } from 'react-redux'
 import {
   addBoard,
-  moveItem
+  moveItem,
+  moveBoard
 } from './actions'
 
 const AppContainer = styled.div`
@@ -28,8 +29,14 @@ const onDragUpdate = () => {}
 const App = props => {
   const [newBoardName, setNewBoardName] = useState('')
 
-  const boards = props.boards && props.boards.map(b => (
-    <Board key={b.id} id={b.id} items={b.items} title={b.title} />
+  const boards = props.boards && props.boards.map((b, index) => (
+    <DraggableBoard
+      index={index}
+      key={b.id}
+      id={b.id}
+      items={b.items}
+      title={b.title}
+    />
   ))
 
   const addBoard = () => {
@@ -40,7 +47,13 @@ const App = props => {
   const onDragEnd = result => {
     if (!result.destination) { return }
 
-    props.moveItem(result.source, result.destination)
+    if (result.type === 'ITEM') {
+      props.moveItem(result.source, result.destination)      
+    }
+
+    if (result.type === 'BOARD') {
+      props.moveBoard(result.source.index, result.destination.index)
+    }
   }
 
   return (
@@ -54,6 +67,7 @@ const App = props => {
         <HorizontalContainer>
           <Input
             value={newBoardName}
+            placeholder='Board name'
             onChange={e => setNewBoardName(e.target.value)}
             onKeyPress={e => e.key === 'Enter' && addBoard()}
           />
@@ -64,9 +78,25 @@ const App = props => {
               Add board
             </Button>
         </HorizontalContainer>
-        <HorizontalContainer>
-          { boards }
-        </HorizontalContainer>
+        <Droppable
+          droppableId={props.id + ''}
+          type="BOARD"
+        >
+          {(provided, snapshot) => (
+            <div
+              ref={provided.innerRef}
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                margin: 'auto',
+              }}
+              {...provided.droppableProps}
+            >
+              { boards }
+              { provided.placeholder }
+            </div>
+          )}
+          </Droppable>
       </AppContainer>
     </DragDropContext>
   )
@@ -76,6 +106,7 @@ export default connect(
   state => ({ boards: state.boards }),
   dispatch => ({
     addBoard: name => dispatch(addBoard(name)),
-    moveItem: (from, to) => dispatch(moveItem(from, to))
+    moveItem: (from, to) => dispatch(moveItem(from, to)),
+    moveBoard: (from, to) => dispatch(moveBoard(from, to))
   })
 )(App);

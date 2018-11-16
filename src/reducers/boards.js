@@ -100,6 +100,9 @@ const boards = (state = initialState, action) => {
     localStorage.setItem('state', JSON.stringify(newState))
 
     return newState
+  case 'MOVE_BOARD':
+    console.log('moving board')
+    return state
   default:
     return state
   }

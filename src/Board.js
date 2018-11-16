@@ -21,6 +21,7 @@ const StyledBoard = styled.div`
   width: 200pt;
   height: 400pt;
   border: 1pt solid lightgray;
+  border-radius: 2pt;
   box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.2);
   padding: 10pt;
   background: linear-gradient(to bottom right, white, #f0f0f0);
@@ -31,9 +32,11 @@ const Title = styled.input`
   font-size: 16pt;
   text-align: center;
   border: none;
+  border: ${p => p.disabled ? '1px solid transparent' : '1px dashed lightgray'};
   border-bottom: 1pt solid gray;
-  padding-top: 4pt;
-  padding-bottom: 12pt;
+  box-sizing: border-box;
+  padding-top: 10pt;
+  padding-bottom: 18pt;
   height: 10pt;
   width: 200pt;
   color: #404040;
@@ -106,7 +109,7 @@ const Board = props => {
       </RemoveBoardButton>
       <Droppable
         droppableId={props.id + ''}
-        type="BOARD"
+        type="ITEM"
       >
         {(provided, snapshot) => (
           <div
@@ -122,7 +125,8 @@ const Board = props => {
       </Droppable>
       <FooterContainer>
         <Input
-          value={newItemName}    
+          value={newItemName}
+          placeholder='Item name'
           onChange={e => setNewItemName(e.target.value)}
           onKeyPress={e => e.key === 'Enter' && addItem()}
         />

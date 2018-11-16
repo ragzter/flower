@@ -7,11 +7,12 @@ const StyledButton = styled.button`
   font-size: 13t;
   height: 20pt;
   border: 1px solid lightgray;
-  background: linear-gradient(white, lightgray);
+  border-radius: 2pt;
+  background: linear-gradient(white, #eee);
   outline: none;
   color: #404040;
   &:hover {
-    background: linear-gradient(white, #d0ffd0);
+    background: linear-gradient(white, #e0ffe0);
   }
 `
 

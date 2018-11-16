@@ -35,3 +35,9 @@ export const moveItem = (source, destination) => ({
   source,
   destination
 })
+
+export const moveBoard = (from, to) => ({
+  type: 'MOVE_BOARD',
+  from,
+  to
+})
