@@ -101,13 +101,20 @@ const boards = (state = initialState, action) => {
 
     return newState
   case 'MOVE_BOARD':
-    console.log('moving board')
-    return state
+    let board = state[action.from]
+
+    newState = removeAtIndex(action.from, state)
+    newState = insertAtIndex(board, action.to, newState)
+
+    localStorage.setItem('state', JSON.stringify(newState))
+
+    return newState
   default:
     return state
   }
 }
 
-const insertAtIndex = (x, i, arr) => [].concat(arr.slice(0, i), x, arr.slice(i, arr.length))
+const removeAtIndex = (i, arr) => [].concat(arr.slice(0, i), arr.slice(i + 1, arr.length))
+const insertAtIndex = (x, i, arr) => arr ? [].concat(arr.slice(0, i), x, arr.slice(i, arr.length)) : [x]
 
 export default boards

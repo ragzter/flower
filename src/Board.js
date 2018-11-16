@@ -109,12 +109,15 @@ const Board = props => {
       </RemoveBoardButton>
       <Droppable
         droppableId={props.id + ''}
-        type="ITEM"
+        type='ITEM'
       >
         {(provided, snapshot) => (
           <div
             ref={provided.innerRef}
             style={{
+              display: 'flex',
+              flexDirection: 'column',
+              height: '340pt'
             }}
             {...provided.droppableProps}
           >

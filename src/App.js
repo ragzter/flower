@@ -80,7 +80,8 @@ const App = props => {
         </HorizontalContainer>
         <Droppable
           droppableId={props.id + ''}
-          type="BOARD"
+          type='BOARD'
+          direction='horizontal'
         >
           {(provided, snapshot) => (
             <div
